@@ -104,19 +104,22 @@
         }
     </style>
     <script>
-        var callAPI  = (base, exponent) => {
+        function callAPI(base, exponent) {
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
-            var raw = JSON.stringify({"base":base, "exponent":exponent});
+
+            var raw = JSON.stringify({"base": base, "exponent": exponent});
+
             var requestOptions = {
                 method: 'POST',
                 headers: myHeaders,
                 body: raw,
                 redirect: 'follow'
             };
+
             fetch("https://zxbht800w3.execute-api.ap-south-1.amazonaws.com/PowerOfMath", requestOptions)
-            .then(response => response.text())
-            .then(result => alert(JSON.parse(result).body))
+            .then(response => response.json()) // Properly parse JSON response
+            .then(data => alert(data.body)) // Display response
             .catch(error => console.log('error', error));
         }
     </script>
@@ -124,14 +127,12 @@
 <body>
     
     <h1>To The Power Of Math</h1>
-    <form>
+    <form onsubmit="return false;">
         <label>Base number:</label>
-        <input type = "text" id = "base">
+        <input type="text" id="base">
         <label> to the power of: </label>
-        <input type = "text" id = "exponent">
-        <!-- we are writing API inside button as we need the process to take place while clicking the button 
-        and we are giving events name of base and exponent as same given in lambda -->
-        <button type = "button" onclick = "callAPI(document.getElementById('base').value, document.getElementById('exponent').value)" >
+        <input type="text" id="exponent">
+        <button type="button" onclick="callAPI(document.getElementById('base').value, document.getElementById('exponent').value)">
             Calculate
         </button>
     </form>
