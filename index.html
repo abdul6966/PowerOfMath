@@ -4,8 +4,137 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Power Of Math</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+    
+        body {
+            background: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+    
+        h1 {
+            color: #2c3e50;
+            margin: 2rem 0;
+            font-size: 2.5rem;
+            text-align: center;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+    
+        form {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 800px;
+            width: 100%;
+        }
+    
+        label {
+            font-size: 1.1rem;
+            color: #495057;
+            align-self: center;
+        }
+    
+        input {
+            padding: 0.8rem 1rem;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1rem;
+            width: 120px;
+            transition: border-color 0.3s ease;
+        }
+    
+        input:focus {
+            outline: none;
+            border-color: #4dabf7;
+        }
+    
+        button {
+            background: #1971c2;
+            color: white;
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+    
+        button:hover {
+            background: #1864ab;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        }
+    
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            form {
+                flex-direction: column;
+                align-items: center;
+                padding: 1.5rem;
+            }
+    
+            input {
+                width: 100%;
+                max-width: 200px;
+            }
+    
+            button {
+                width: 100%;
+                max-width: 200px;
+            }
+        }
+    </style>
+    <script>
+        var callAPI  = (base, exponent) => {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            var raw = JSON.stringify({"base":base, "exponent":exponent});
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            };
+            fetch("https://zxbht800w3.execute-api.ap-south-1.amazonaws.com/PowerOfMath", requestOptions)
+            .then(response => response.text())
+            .then(result => alert(JSON.parse(result).body))
+            .catch(error => console.log('error', error));
+        }
+    </script>
 </head>
 <body>
+    
     <h1>To The Power Of Math</h1>
+    <form>
+        <label>Base number:</label>
+        <input type = "text" id = "base">
+        <label> to the power of: </label>
+        <input type = "text" id = "exponent">
+        <!-- we are writing API inside button as we need the process to take place while clicking the button 
+        and we are giving events name of base and exponent as same given in lambda -->
+        <button type = "button" onclick = "callAPI(document.getElementById('base').value, document.getElementById('exponent').value)" >
+            Calculate
+        </button>
+    </form>
+    
 </body>
 </html>
